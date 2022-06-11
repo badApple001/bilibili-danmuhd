@@ -159,6 +159,7 @@ class BilibiliSocket {
                         for (let [i, num] of popuLen.entries()) {
                             temp += num * Math.pow(16, (3 - i) * 2);
                         }
+
                         this.onPopularityChange(temp);
                         break;
                     }

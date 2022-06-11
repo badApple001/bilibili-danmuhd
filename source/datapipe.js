@@ -86,8 +86,21 @@ class datapipe {
     //游戏弹幕
     danmaku(data) {
 
+        if (!data || typeof data != "string" || data.length < 1) {
+            console.log("$$$$$$$$$$$$$$$$$ unknown type data: ", data);
+        }
+
         //消息过滤
-        let msg = JSON.parse(data);
+        let msg;
+        try {
+            msg = JSON.parse(data);
+        }
+        catch (e) {
+            console.log("$$$$$$$$$$$$$$$$$ json parse fail: ", data);
+            return;
+        }
+
+
         switch (msg.cmd) {
 
             //观看人数变化

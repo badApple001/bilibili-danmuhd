@@ -2,7 +2,7 @@ const datapipe = require('./datapipe');
 const BilibiliSocket = require("./bilibili-socket")
 
 !function () {
-    let bilibiliClient = new BilibiliSocket(432048);
+    let bilibiliClient = new BilibiliSocket(25005271);
     let pipe = new datapipe();
     bilibiliClient.onOpen = async function () {
         console.log(">>>>>>>>>>>>>> link room success!!!");
