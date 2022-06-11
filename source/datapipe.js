@@ -25,6 +25,7 @@ class datapipe {
         const server = new net.Server();
         //设置最大连接数量
         server.maxConnections = 1000;
+
         //监听connection事件
         server.on('connection', async function (socket) {
             console.log('有新的客户端接入');
@@ -88,6 +89,7 @@ class datapipe {
 
         if (!data || typeof data != "string" || data.length < 1) {
             console.log("$$$$$$$$$$$$$$$$$ unknown type data: ", data);
+            return;
         }
 
         //消息过滤
@@ -146,18 +148,39 @@ class datapipe {
         console.log("接收到数据: " + data.toString());
     }
 
+
+
+
+
+    msgQueue = [];
+    send2client() {
+        if (this.msgQueue.length > 0) {
+            let msg = this.msgQueue.shift();
+            let jsonstr = JSON.stringify(msg);
+            if (this.clients.length > 0) {
+                for (let c of this.clients) {
+                    c._handle && c.write(jsonstr);
+                }
+                console.log(">>>>>>>>>>>>>> transmit danmaku: " + jsonstr);
+            }
+        }
+        else if (this.intervalID != -1) {
+            clearInterval(this.intervalID);
+            this.intervalID = -1;
+        }
+    }
+
+    intervalID = -1;
     /**
      * 发送给所有客户端
      * @param {object} msg 
      */
     pub(msg) {
-        let jsonstr = JSON.stringify(msg);
-        if (this.clients.length > 0) {
-            for (let c of this.clients) {
-                c._handle && c.write(jsonstr);
-            }
-            console.log(">>>>>>>>>>>>>> transmit danmaku: " + jsonstr);
+        this.msgQueue.push(msg);
+        if (this.intervalID == -1) {
+            this.intervalID = setInterval(this.send2client.bind(this), 17);
         }
     }
+
 }
 module.exports = datapipe;
