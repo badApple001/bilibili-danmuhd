@@ -109,17 +109,16 @@ class datapipe {
             case "WATCHED_CHANGE":
                 //{"cmd":"WATCHED_CHANGE","data":{"num":2481,"text_small":"2481","text_large":"2481人看过"}}
                 // this.pub("WATCHED_CHANGE", data);
-                this.pub(msg);
+                //this.pub(msg);
                 break;
             //在线
             case "ONLINE_RANK_V2":
                 //{"cmd":"ONLINE_RANK_V2","data":{"list":[{"uid":1035106537,"face":"http://i1.hdslb.com/bfs/face/c8aafe84f8ebdfcb5c72a0665920c2555f7420fd.jpg","score":"290","uname":"蜡笔小鑫cy","rank":1,"guard_level":0},{"uid":1279208711,"face":"http://i2.hdslb.com/bfs/face/d1fcb6df9b226009b8ed4f3ef429d0221826decd.jpg","score":"257","uname":"风中追风大傻X","rank":2,"guard_level":0},{"uid":1517184262,"face":"http://i1.hdslb.com/bfs/face/c41ebeb15eae06d8077d941484263fabb17e1e4e.jpg","score":"216","uname":"bili_38204078821","rank":3,"guard_level":0},{"uid":161295539,"face":"http://i2.hdslb.com/bfs/face/f8cdfc771d0ea69617c88109bb9b509e83967b83.jpg","score":"5","uname":"社会褀","rank":4,"guard_level":0},{"uid":34632002,"face":"http://i0.hdslb.com/bfs/baselabs/1f6a9da07a70a491d0147ff94ab6b4515bc0ba06.jpg","score":"3","uname":"速溶鸡精","rank":5,"guard_level":0},{"uid":479249239,"face":"http://i1.hdslb.com/bfs/face/61778d9a7738af046c30e03e3193d51e918c3985.jpg","score":"3","uname":"慕青泽恩","rank":6,"guard_level":0},{"uid":522560310,"face":"http://i0.hdslb.com/bfs/face/member/noface.jpg","score":"2","uname":"bili_72338258497","rank":7,"guard_level":0}],"rank_type":"gold-rank"}}
-                this.pub(msg);
+                //this.pub(msg);
                 break;
             //在线排行数量
             case "ONLINE_RANK_COUNT":
                 //{"cmd":"ONLINE_RANK_COUNT","data":{"count":11}}
-
                 break;
             //弹幕消息
             case "DANMU_MSG":
