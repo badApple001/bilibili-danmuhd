@@ -1,4 +1,5 @@
 const net = require("net");
+const fs = require('fs')
 
 function getBytesLength(str) {
     var num = str.length; //先用num保存一下字符串的长度（可以理解为：先假设每个字符都只占用一个字节）
@@ -130,6 +131,27 @@ class datapipe {
                 this.pub(miniMsg);
                 //{"cmd":"DANMU_MSG","info":[[0,1,25,16777215,1654587468536,1654587061,0,"6f369e99",0,0,0,"",0,"{}","{}",{"mode":0,"show_player_type":0,"extra":"{\"send_from_me\":false,\"mode\":0,\"color\":16777215,\"dm_type\":0,\"font_size\":25,\"player_mode\":1,\"show_player_type\":0,\"content\":\"三体\",\"user_hash\":\"1865850521\",\"emoticon_unique\":\"\",\"bulge_display\":0,\"recommend_score\":10,\"main_state_dm_color\":\"\",\"objective_state_dm_color\":\"\",\"direction\":0,\"pk_direction\":0,\"quartet_direction\":0,\"yeah_space_type\":\"\",\"yeah_space_url\":\"\",\"jump_to_url\":\"\",\"space_type\":\"\",\"space_url\":\"\"}"}],"三体",[34632002,"速溶鸡精",0,0,0,10000,1,""],[2,"C酱","C酱です",47867,6067854,"",0,12632256,12632256,12632256,0,0,67141],[20,0,6406234,"\u003e50000",0],["",""],0,0,null,{"ts":1654587468,"ct":"59E23156"},0,0,null,null,0,14]}
                 break;
+            //礼物
+            case "SEND_GIFT": {
+                let miniMsg = {
+                    cmd: "GIFT",
+                    uid: msg.data.uid,
+                    giftName: msg.data.giftName,
+                    giftId: msg.data.giftId,
+                    num: msg.data.num,
+                }
+                // console.log(miniMsg);
+                // if(!this.giftList[miniMsg.giftId])
+                // {
+                //     this.giftList[miniMsg.giftId] = miniMsg;
+                //     let jsonstr = JSON.stringify(this.giftList,null,"\t");
+                //     fs.writeFile("./gift/giftList.json", jsonstr,e=>{
+
+                //     });
+                // }
+                this.pub(miniMsg);
+            }
+                break;
             case "INTERACT_WORD":
                 //{"cmd":"INTERACT_WORD","data":{"contribution":{"grade":0},"dmscore":4,"fans_medal":{"anchor_roomid":24656761,"guard_level":0,"icon_id":0,"is_lighted":1,"medal_color":6067854,"medal_color_border":6067854,"medal_color_end":6067854,"medal_color_start":6067854,"medal_level":2,"medal_name":"百科书","score":442,"special":"","target_id":122923414},"identities":[3,1],"is_spread":0,"msg_type":1,"roomid":25095499,"score":1654597911251,"spread_desc":"","spread_info":"","tail_icon":0,"timestamp":1654587469,"trigger_time":1654587468193862000,"uid":209762138,"uname":"黑泽臣","uname_color":""}}
 
@@ -140,22 +162,19 @@ class datapipe {
         }
 
     }
-
+    giftList = {};
 
     //客户端消息
     receive(s, data) {
         console.log("接收到数据: " + data.toString());
     }
 
-
-
-
-
     msgQueue = [];
     send2client() {
         if (this.msgQueue.length > 0) {
             let msg = this.msgQueue.shift();
             let jsonstr = JSON.stringify(msg);
+            jsonstr = jsonstr.concat(msg.cmd == "GIFT" ? '2' : '1');
             if (this.clients.length > 0) {
                 for (let c of this.clients) {
                     c._handle && c.write(jsonstr);
