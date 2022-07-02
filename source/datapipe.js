@@ -14,7 +14,7 @@ function getBytesLength(str) {
 class datapipe {
 
     //事件注册
-    constructor() {
+    constructor( port ) {
         const self = this;
         /**
          * @type {net.Socket[]}
@@ -25,14 +25,14 @@ class datapipe {
         //实例化一个服务器对象
         const server = new net.Server();
         //设置最大连接数量
-        server.maxConnections = 1000;
+        server.maxConnections = 100;
 
         //监听connection事件
         server.on('connection', async function (socket) {
             console.log('有新的客户端接入');
             self.clients.push(socket);
             server.getConnections(async function (err, count) {
-                console.log(`当前连接的客户端个数为：${count}|${server.maxConnections}`);
+                console.log(`${(new Date()).toLocaleTimeString()} New Client Connected. ${count}|${server.maxConnections}`);
             });
             //监听data事件
             socket.on("data", async function (data) {
@@ -43,7 +43,7 @@ class datapipe {
                 if (index != -1) {
                     self.clients.splice(index, 1);
                     server.getConnections(async function (err, count) {
-                        console.log(`当前连接的客户端个数为：${count}|${server.maxConnections}`);
+                        console.log(`${(new Date()).toLocaleTimeString()} Client Disconnect. ${count}|${server.maxConnections}`);
                     });
                 }
             });
@@ -52,13 +52,13 @@ class datapipe {
                 if (index != -1) {
                     self.clients.splice(index, 1);
                     server.getConnections(async function (err, count) {
-                        console.log(`当前连接的客户端个数为：${count}|${server.maxConnections}`);
+                        console.log(`${(new Date()).toLocaleTimeString()} Client Disconnect. ${count}|${server.maxConnections}`);
                     });
                 }
             });
         });
         //设置监听端口
-        server.listen(5566, "0.0.0.0", async function () {
+        server.listen(port, "0.0.0.0", async function () {
             console.log("服务正在监听中。。。")
         });
         //设置监听时的回调函数

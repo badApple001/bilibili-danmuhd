@@ -2,8 +2,12 @@ const datapipe = require('./datapipe');
 const BilibiliSocket = require("./bilibili-socket")
 
 !function () {
+    //房间号
     let bilibiliClient = new BilibiliSocket(592067);
-    let pipe = new datapipe();
+    //端口
+    let pipe = new datapipe(10086);
+
+    //协议监听
     bilibiliClient.onOpen = async function () {
         console.log(">>>>>>>>>>>>>> link room success!!!");
         console.log(">>>>>>>>>>>>>> start to receive danmaku!!!  roomid: " + bilibiliClient.roomId);
